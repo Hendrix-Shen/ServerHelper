@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.gitee.mc_shd1.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [],
+  "client": [],
+  "server" : [
+    "MinecraftServerMixin",
+    "CommandManagerMixin",
+    "ServerPlayNetworkHandlerMixin",
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
