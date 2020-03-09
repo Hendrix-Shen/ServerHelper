@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.brigadier.CommandDispatcher;
 
+import io.gitee.mc_shd1.commands.backupCommand;
 import io.gitee.mc_shd1.commands.hereCommand;
 import io.gitee.mc_shd1.utils.Message;
 import io.gitee.mc_shd1.Config;
@@ -39,18 +40,19 @@ public class Core
 	    	Message.LOG.error("[HSCore]模组载入失败!");
 	    	Message.LOG.error("[HSCore]请检查配置文件!");
 	    	Message.LOG.info("[HSCore]模组作者Hendrix Shen");
-	    	Message.LOG.info("[HSCore]模组版本: 0.0.2!");
+	    	Message.LOG.info("[HSCore]模组版本: 0.0.3!");
 		}
     }
     public static void onStop(MinecraftServer server)
     {
     	Message.LOG.info("[HSCore]模组卸载!");
     	Message.LOG.info("[HSCore]模组作者Hendrix Shen");
-    	Message.LOG.info("[HSCore]模组版本: 0.0.2");
+    	Message.LOG.info("[HSCore]模组版本: 0.0.3");
     }
     public static void registerCoreCommands(CommandDispatcher<ServerCommandSource> dispatcher)
     {
         hereCommand.register(dispatcher);
+        backupCommand.register(dispatcher);
         currentCommandDispatcher = dispatcher;
     }
     public static boolean CheckMainConfig() {
