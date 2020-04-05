@@ -1,2 +1,2 @@
-# HSCore
-Hendrix Shen Core for Minecraft Server!
+# Server Helper
+A Helper for Minecraft Server!
