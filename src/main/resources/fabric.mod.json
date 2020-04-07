@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "serverhelper",
+  "version": "${version}",
+  "name": "Server helper",
+  "description": "A Helper for Minecraft Server!",
+  "authors": [
+    "Hendrix_Shen"
+  ],
+  "contact": {
+    "homepage": ""
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/modid/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": []
+  },
+  "mixins": [
+    "ServerHelper.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "1.14.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
