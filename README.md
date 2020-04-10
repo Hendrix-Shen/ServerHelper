@@ -1,6 +1,6 @@
 # Server Helper
 
-使用 Fabric 模组还原[MCD部分插件](https://github.com/Fallen-Breath/MCDReforged)功能
+使用 Fabric 模组还原 [MCD](https://github.com/Fallen-Breath/MCDReforged) [部分插件](https://github.com/MCDReforged-Plugins/PluginCatalogue) 功能
 
 ## 功能
 
@@ -23,7 +23,7 @@
 
 支持大部分语言文本(其中的大部分都支持Json显示)
 
-### 以下是以还原 MCD 插件的列表
+### 以下是以还原 [MCD](https://github.com/Fallen-Breath/MCDReforged) [部分插件](https://github.com/MCDReforged-Plugins/PluginCatalogue) 的列表
 | 名称                                                 | 维护者                                            | 功能                                     |
 | ---------------------------------------------------- | ------------------------------------------------- | ---------------------------------------- |
 | [Here](https://github.com/TISUnion/Here)             | [Fallen_Breath](https://github.com/Fallen-Breath) | 显示坐标并高亮玩家                       |
