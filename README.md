@@ -64,10 +64,13 @@
 
 可以的, Mixin中预留了玩家进入游戏事件的方法, 可以在那里调用
 
-4. 在后台执行命令不但显示不了信息还会出现 An unexpected error occurred trying to execute that command?
+~~*4. 在后台执行命令不但显示不了信息还会出现 An unexpected error occurred trying to execute that command?*~~
 
-这个不用太担心, 一般是没有错误滴, 只是向后台发送消息不能像向普通玩家发消息一样, 消息没能成功发送.
-以后可能会修复.
+~~*这个不用太担心, 一般是没有错误滴, 只是向后台发送消息不能像向普通玩家发消息一样, 消息没能成功发送.*~~
+
+~~*以后可能会修复.*~~
+
+(最新版已修复)
 
 5. 版本兼容性?
 
