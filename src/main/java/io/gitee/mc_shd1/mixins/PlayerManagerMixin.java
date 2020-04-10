@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerManagerMixin {
 
     @Inject(method = "onPlayerConnect", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "net/minecraft/server/network/ServerPlayerEntity.method_14235 ()V"))
-    private void onChat(ClientConnection connection, ServerPlayerEntity player, CallbackInfo info){
+    private void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo info){
         //Message.LOG.info(player.getName().getString());// 获取玩家名
     }
 }

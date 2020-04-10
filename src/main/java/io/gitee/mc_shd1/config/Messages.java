@@ -15,8 +15,17 @@ public final class Messages {
     public __Commands Commands = new __Commands();
     public class __Commands {
         public __Core Core = new __Core();
+        public __Backup Backup = new __Backup();
         public __Here Here = new __Here();
         public __Stats Stats = new __Stats();
+        public class __Backup {
+            public __FeedbackMessage FeedbackMessage = new __FeedbackMessage();
+            public class __FeedbackMessage {
+                public String Succeed = "{\"text\":\"§a存档 §e%backup_name% §a备份成功.\"}";
+                public String Failed_AlreadyExist = "{\"text\":\"§c存档 §e%backup_name% §c备份失败, 该备份已存在.\"}";
+                public String Failed_Unknown = "{\"text\":\"§c存档 §e%backup_name% §c备份失败, 未知错误, 该备份已存在.\"}";
+            }
+        }
         public class __Core {
             public __SubCommands SubCommands = new __SubCommands();
             public class __SubCommands {
@@ -25,12 +34,12 @@ public final class Messages {
                     public __FeedbackMessage FeedbackMessage = new __FeedbackMessage();
                     public __ReloadMod ReloadMod = new __ReloadMod();
                     public class __FeedbackMessage {
-                        public String All_Succeed = "[{\"text\":\"§acore §7>> §b配置文件已重载(%reload_mode%§b).\"}]";
-                        public String All_Failed = "[{\"text\":\"§acore §7>> §c配置文件重载失败(%reload_mode%§c).\"}]";
-                        public String Config_Succeed = "[{\"text\":\"§acore §7>> §b配置文件已重载(%reload_mode%§b).\"}]";
-                        public String Config_Failed = "[{\"text\":\"§acore §7>> §c配置文件重载失败(%reload_mode%§c).\"}]";
-                        public String Message_Succeed = "[{\"text\":\"§acore §7>> §b配置文件已重载(%reload_mode%§b).\"}]";
-                        public String Message_Failed = "[{\"text\":\"§acore §7>> §c配置文件重载失败(%reload_mode%§c).\"}]";
+                        public String All_Succeed = "{\"text\":\"§acore §7>> §b配置文件已重载(%reload_mode%§b).\"}";
+                        public String All_Failed = "{\"text\":\"§acore §7>> §c配置文件重载失败(%reload_mode%§c).\"}";
+                        public String Config_Succeed = "{\"text\":\"§acore §7>> §b配置文件已重载(%reload_mode%§b).\"}";
+                        public String Config_Failed = "{\"text\":\"§acore §7>> §c配置文件重载失败(%reload_mode%§c).\"}";
+                        public String Message_Succeed = "{\"text\":\"§acore §7>> §b配置文件已重载(%reload_mode%§b).\"}";
+                        public String Message_Failed = "{\"text\":\"§acore §7>> §c配置文件重载失败(%reload_mode%§c).\"}";
                     }
                     public class __ReloadMod {
                         public String FullMode = "完全模式";
@@ -42,7 +51,7 @@ public final class Messages {
         }
         public class __Here {
             public String TargetMessage = "[{\"text\":\"%player_name% 在 %player_dimension% §r@§b\"},{\"text\":\"[x:%player_x%, y:%player_y%, z:%player_z%]\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"%player_x% %player_y% %player_z%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":[\"§a点击复制坐标\"]}},{\"text\":\"\",\"insertion\":\" §r向各位打招呼\"}]";
-            public String FeedbackMessage = "[{\"text\":\"§a你将会被高亮§e %glowing_time% §a秒\"}]";
+            public String FeedbackMessage = "{\"text\":\"§a你将会被高亮§e %glowing_time% §a秒\"}";
         }
         public class __Stats {
             public __SubCommands SubCommands = new __SubCommands();
@@ -87,8 +96,8 @@ public final class Messages {
                 public class __Refresh {
                     public __FeedbackMessage FeedbackMessage = new __FeedbackMessage();
                     public class __FeedbackMessage {
-                        public String Refresh_Succeed = "[{\"text\":\"§a玩家UUID缓存更新更新成功.\"}]";
-                        public String Refresh_Failed = "[{\"text\":\"§c玩家UUID缓存更新更新失败.\"}]";
+                        public String Refresh_Succeed = "{\"text\":\"§a玩家UUID缓存更新更新成功.\"}";
+                        public String Refresh_Failed = "{\"text\":\"§c玩家UUID缓存更新更新失败.\"}";
                     }
                 }
                 public class __Set {

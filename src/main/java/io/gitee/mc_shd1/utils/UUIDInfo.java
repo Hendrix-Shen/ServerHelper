@@ -42,11 +42,11 @@ public class UUIDInfo {
             UUIDPluginCacheFile.getParentFile().mkdir();
             try (Writer writer = new OutputStreamWriter(new FileOutputStream(UUIDPluginCacheFile), StandardCharsets.UTF_8))
             {
-                Message.LOG.info("["+ Core.Mod_Name + "]写入 - UUID缓存文件 SH_UUIDCache.json");
+                Messager.LOG.info("["+ Core.Mod_Name + "]写入 - UUID缓存文件 SH_UUIDCache.json");
                 writer.write(gson1.toJson(UUIDPluginInfo));
             }
         } catch (Exception e) {
-            Message.LOG.info("["+ Core.Mod_Name + "]读写 - UUID缓存文件 SH_UUIDCache 失败");
+            Messager.LOG.info("["+ Core.Mod_Name + "]读写 - UUID缓存文件 SH_UUIDCache 失败");
             e.printStackTrace();
             return 0;
         }

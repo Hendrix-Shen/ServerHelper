@@ -1,12 +1,13 @@
 package io.gitee.mc_shd1.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.Message;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.gitee.mc_shd1.utils.CommandManager;
 import io.gitee.mc_shd1.Core;
-import io.gitee.mc_shd1.utils.Message;
+import io.gitee.mc_shd1.utils.Messager;
 import net.minecraft.command.arguments.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -78,61 +79,61 @@ public class coreCommand {
         dispatcher.register(core);
     }
 
-    private static int CoreReloadAll(ServerCommandSource source) {
-        Message.LOG.info("[ServerHelper]正在重新加载配置文件(完全模式)");
-        Message.LOG.info("[ServerHelper]==========检查配置文件==========");
+    public static int CoreReloadAll(ServerCommandSource source) {
+        Messager.LOG.info("[ServerHelper]正在重新加载配置文件(完全模式)");
+        Messager.LOG.info("[ServerHelper]==========检查配置文件==========");
         if (Core.CheckMainConfig() && Core.CheckMessage()) {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(
+            Messager.Message(source,
                     Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.All_Succeed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.FullMode)));
-            Message.LOG.info("[ServerHelper]重载完成!");
+                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.FullMode));
+            Messager.LOG.info("[ServerHelper]重载完成!");
         } else {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(
+            Messager.Message(source,
                     Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.All_Failed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.FullMode)));
-            Message.LOG.error("[ServerHelper]重载失败!");
-            Message.LOG.error("[ServerHelper]请检查配置文件!");
+                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.FullMode));
+            Messager.LOG.error("[ServerHelper]重载失败!");
+            Messager.LOG.error("[ServerHelper]请检查配置文件!");
         }
         return 1;
     }
-    private static int CoreReloadConfig(ServerCommandSource source) {
-        Message.LOG.info("[HSCore]正在重新加载配置文件(简单模式)");
-        Message.LOG.info("[HSCore]==========检查配置文件==========");
+    public static int CoreReloadConfig(ServerCommandSource source) {
+        Messager.LOG.info("[HSCore]正在重新加载配置文件(简单模式)");
+        Messager.LOG.info("[HSCore]==========检查配置文件==========");
         if (Core.CheckMainConfig()) {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(
+            Messager.Message(source,
                     Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Config_Succeed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Config)));
-            Message.LOG.info("[HSCore]重载完成!");
+                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Config));
+            Messager.LOG.info("[HSCore]重载完成!");
         } else {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(
+            Messager.Message(source,
                     Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Config_Failed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Config)));
-            Message.LOG.error("[HSCore]重载失败!");
-            Message.LOG.error("[HSCore]请检查配置文件!");
+                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Config));
+            Messager.LOG.error("[HSCore]重载失败!");
+            Messager.LOG.error("[HSCore]请检查配置文件!");
         }
         return 1;
     }
-    private static int CoreReloadMessage(ServerCommandSource source) {
-        Message.LOG.info("[HSCore]正在重新加载配置文件(简单模式)");
-        Message.LOG.info("[HSCore]==========检查配置文件==========");
+    public static int CoreReloadMessage(ServerCommandSource source) {
+        Messager.LOG.info("[HSCore]正在重新加载配置文件(简单模式)");
+        Messager.LOG.info("[HSCore]==========检查配置文件==========");
         if (Core.CheckMessage()) {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(
+            Messager.Message(source,
                     Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Message_Succeed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Message)));
-            Message.LOG.info("[HSCore]重载完成!");
+                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Message));
+            Messager.LOG.info("[HSCore]重载完成!");
         } else {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(
+            Messager.Message(source,
                     Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Message_Failed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Message)));
-            Message.LOG.error("[HSCore]重载失败!");
-            Message.LOG.error("[HSCore]请检查配置文件!");
+                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Message));
+            Messager.LOG.error("[HSCore]重载失败!");
+            Messager.LOG.error("[HSCore]请检查配置文件!");
         }
         return 1;
     }
-    private static int CoreHelpCommand(ServerCommandSource source, int Page) {
+    public static int CoreHelpCommand(ServerCommandSource source, int Page) {
         int MaxPage = 2;
         if (Page == 1) {
-            source.getEntity().sendMessage(Text.Serializer.fromJson("[" +
+            Messager.Message(source, "[" +
                     "{\"text\": \"§e==================== §eCore指令帮助 §e====================\n\"}," +
                     "{\"text\": \"§a/core backup <存档> §7- §b备份存档文件\n\", \"hoverEvent\": {\"action\": \"show_text\", \"value\": \"§e别称\n§f- §7/backup\n§a点击复制到聊天窗\"}, \"clickEvent\": {\"action\": \"suggest_command\", \"value\": \"/core backup \"}}," + //1
                     "{\"text\": \"§a/core help [页码] §7- §b显示帮助菜单\n\", \"hoverEvent\": {\"action\": \"show_text\", \"value\": \"§e别称\n§f- §7/core\n§a点击复制到聊天窗\"}, \"clickEvent\": {\"action\": \"suggest_command\", \"value\": \"/core\"}}," +             //2
@@ -146,9 +147,9 @@ public class coreCommand {
                     "{\"text\": \"§7<<< 上一页\"}," +
                     "{\"text\": \"§e || \"}," +
                     "{\"text\": \"§2下一页 >>>\", \"clickEvent\": {\"action\": \"run_command\", \"value\": \"/core help " + (Page + 1) + "\"}}," +
-                    "{\"text\": \" §e==============\"}]"));
+                    "{\"text\": \" §e==============\"}]");
         } else if (Page == 2) {
-            source.getEntity().sendMessage(Text.Serializer.fromJson("[" +
+            Messager.Message(source, "[" +
                     "{\"text\": \"§e==================== §eCore指令帮助 §e====================\n\"}," +
                     "{\"text\": \"§a/core stats scoreboard hide §7- §b隐藏统计信息计分板\n\", \"hoverEvent\": {\"action\": \"show_text\", \"value\": \"§e别称\n§f- §7/stats scoreboard hide\n§a点击复制到聊天窗\"}, \"clickEvent\": {\"action\": \"suggest_command\", \"value\": \"/core stats scoreboard hide\"}}," + //1
                     "{\"text\": \"§a/core stats scoreboard set <统计类别> <统计内容> §7- §b设置统计信息计分板\n\", \"hoverEvent\": {\"action\": \"show_text\", \"value\": \"§e别称\n§f- §7/stats scoreboard set\n§a点击复制到聊天窗\"}, \"clickEvent\": {\"action\": \"suggest_command\", \"value\": \"/core stats scoreboard set \"}}," + //2
@@ -158,7 +159,7 @@ public class coreCommand {
                     "{\"text\": \"§2<<< 上一页\", \"clickEvent\": {\"action\": \"run_command\", \"value\": \"/core help " + (Page - 1) + "\"}}," +
                     "{\"text\": \"§e || \"}," +
                     "{\"text\": \"§7下一页 >>>\"}," +
-                    "{\"text\": \" §e==============\"}]"));
+                    "{\"text\": \" §e==============\"}]");
         }
         return 1;
     }

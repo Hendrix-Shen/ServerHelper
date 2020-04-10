@@ -2,8 +2,10 @@ package io.gitee.mc_shd1.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import io.gitee.mc_shd1.Core;
 import io.gitee.mc_shd1.utils.CommandManager;
 import io.gitee.mc_shd1.utils.FileManager;
+import io.gitee.mc_shd1.utils.Messager;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.io.File;
@@ -36,17 +38,17 @@ public class backupCommand {
                 FileManager.copyDir(levelName, "backup/" + levelName);
 
             } catch (IOException e) {
-                //source.getEntity().sendMessage(new TranslatableText(Core.getMessage().command_feedback_message_failed));
-                //source.getEntity().sendMessage(new TranslatableText(Core.getMessage().command_feedback_message_failed));
+                Messager.Message(source, Core.Messages.Commands.Backup.FeedbackMessage.Failed_Unknown
+                    .replaceAll("%backup_name%", backupName));
                 e.printStackTrace();
                 return 0;
             }
             FileManager.renameFileAndDir("backup/" + levelName, "backup/" + backupName);
-            //source.getEntity().sendMessage(new TranslatableText(Core.getMessage().command_feedback_message_successful));
-            //source.getEntity().sendMessage(new TranslatableText(Core.getMessage().command_feedback_message_successful));
+            Messager.Message(source, Core.Messages.Commands.Backup.FeedbackMessage.Succeed
+                .replaceAll("%backup_name%", backupName));
         } else {
-            //source.getEntity().sendMessage(new TranslatableText(Core.getMessage().command_feedback_message_alreadyExist));
-            //source.getEntity().sendMessage(new TranslatableText(Core.getMessage().command_feedback_message_alreadyExist));
+            Messager.Message(source, Core.Messages.Commands.Backup.FeedbackMessage.Failed_AlreadyExist
+                .replaceAll("%backup_name%", backupName));
         }
         return 1;
     }

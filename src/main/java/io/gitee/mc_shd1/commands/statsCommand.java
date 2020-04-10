@@ -3,6 +3,7 @@ package io.gitee.mc_shd1.commands;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.Message;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -12,6 +13,7 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.gitee.mc_shd1.Core;
 import io.gitee.mc_shd1.utils.CommandManager;
 import io.gitee.mc_shd1.utils.FileManager;
+import io.gitee.mc_shd1.utils.Messager;
 import io.gitee.mc_shd1.utils.UUIDInfo;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -121,26 +123,26 @@ public class statsCommand {
             player_uuid = UUIDInfo.NameToUUID(playerName);
         }
         if (player_uuid == "0") {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UUIDCacheLoadFailed));
+            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UUIDCacheLoadFailed);
         } else if(player_uuid == "1") {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.CantFindPlayerFromUUIDCache));
+            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.CantFindPlayerFromUUIDCache);
         } else if(player_uuid == "2") {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UnknownErrorByUUIDCache));
+            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UnknownErrorByUUIDCache);
         } else {
             int statsData = getStatsData(source, player_uuid, classification, target);
             if (statsData == -1) {
-                source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.cantFindPlayerStatsFile));
+                Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.cantFindPlayerStatsFile);
             } else if (statsData == -2) {
-                source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.cantFindStatsFromFile));
+                Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.cantFindStatsFromFile);
             } else if(statsData == -3) {
-                source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UnknownErrorByStatsFinder));
+                Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UnknownErrorByStatsFinder);
             } else {
                 if (istell) {
-                    source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.FeedbackMessage
+                    Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.FeedbackMessage
                             .replaceAll("%target_name%", playerName)
                             .replaceAll("%stats_classification%", classification)
                             .replaceAll("%stats_target%", target)
-                            .replaceAll("%stats_data%", String.valueOf(statsData))));
+                            .replaceAll("%stats_data%", String.valueOf(statsData)));
                 } else {
                     source.getMinecraftServer().getPlayerManager().broadcastChatMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.TargetMessage
                             .replaceAll("%player_name%", source.getDisplayName().getString())
@@ -157,7 +159,7 @@ public class statsCommand {
     public static int rank(ServerCommandSource source, String classification, String target, boolean istell) {
         Map<String, String> rtMap = new HashMap<>();
         if (!FileManager.fileExist("config/SH_UUIDCache.json")) {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.UUIDCacheLoadFailed));
+            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.UUIDCacheLoadFailed);
             return 1;
         } else {
             try {
@@ -185,8 +187,7 @@ public class statsCommand {
             int StatsCount = 0;
             int TotalCount = 0;
             if(StatsList.isEmpty()){
-                source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.StatsNull));
-
+                Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.StatsNull);
             } else {
                 String StatsInfo = "";
                 for (Integer key : StatsList.keySet()) {
@@ -217,12 +218,12 @@ public class statsCommand {
                         break;
                     }
                 } if(istell) {
-                    source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.FeedbackMessage
+                    Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.FeedbackMessage
                     .replaceAll("%stats_classification%", classification)
                     .replaceAll("%stats_target%", target)
                     .replaceAll("%rank_count%", String.valueOf(StatsCount))
-                    .replaceAll("%rank_total%", String.valueOf(TotalCount))));
-                    source.getEntity().sendMessage(Text.Serializer.fromJson("{\"text\": \"" + StatsInfo + "\"}"));
+                    .replaceAll("%rank_total%", String.valueOf(TotalCount)));
+                    Messager.Message(source, ("{\"text\": \"" + StatsInfo + "\"}"));
                 } else {
                     source.getMinecraftServer().getPlayerManager().broadcastChatMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.TargetMessage
                             .replaceAll("%player_name%", source.getDisplayName().getString())
@@ -238,16 +239,16 @@ public class statsCommand {
     }
     public static int refresh(ServerCommandSource source) {
         if(UUIDInfo.UUIDCacheRefresh() == 1){
-            source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Refresh.FeedbackMessage.Refresh_Succeed));
+            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Refresh.FeedbackMessage.Refresh_Succeed);
         } else {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Refresh.FeedbackMessage.Refresh_Failed));
+            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Refresh.FeedbackMessage.Refresh_Failed);
         }
         return 1;
     }
     public static int scoreboard_Set(ServerCommandSource source, String classification, String target){
         Map<String, String> rtMap = new HashMap<>();
         if (!FileManager.fileExist("config/SH_UUIDCache.json")) {
-            source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Set.FeedbackMessage.UUIDCacheLoadFailed));
+            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Set.FeedbackMessage.UUIDCacheLoadFailed);
             return 1;
         } else {
             try {
@@ -270,19 +271,19 @@ public class statsCommand {
                     source.getMinecraftServer().getCommandManager().execute(source.getMinecraftServer().getCommandSource(), "scoreboard players set " + key + " StatsHelper " + getStatsData(source, rtMap.get(key), classification, target));
                 }
             }
-            source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Set.FeedbackMessage.FeedbackMessage));
+            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Set.FeedbackMessage.FeedbackMessage);
             scoreboard_show(source);
         }
         return 1;
     }
     public static int scoreboard_show(ServerCommandSource source) {
         source.getMinecraftServer().getCommandManager().execute(source.getMinecraftServer().getCommandSource(), "/scoreboard objectives setdisplay sidebar StatsHelper");
-        source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Show.FeedbackMessage.Show_Succeed));
+        Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Show.FeedbackMessage.Show_Succeed);
         return 1;
     }
     public static int scoreboard_hide(ServerCommandSource source) {
         source.getMinecraftServer().getCommandManager().execute(source.getMinecraftServer().getCommandSource(), "/scoreboard objectives setdisplay sidebar");
-        source.getEntity().sendMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Hide.FeedbackMessage.Hide_Succeed));
+        Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Hide.FeedbackMessage.Hide_Succeed);
         return 1;
     }
 }

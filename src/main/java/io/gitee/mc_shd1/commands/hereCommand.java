@@ -3,6 +3,7 @@ package io.gitee.mc_shd1.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.gitee.mc_shd1.Core;
+import io.gitee.mc_shd1.utils.CommandManager;
 import net.minecraft.command.arguments.EntityArgumentType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -21,6 +22,7 @@ public class hereCommand {
         LiteralArgumentBuilder<ServerCommandSource> here = literal("here")
                 .executes((c) -> here(c.getSource(), c.getSource().getPlayer()))
                 .then(argument("玩家", EntityArgumentType.player())
+                    .requires((player) -> CommandManager.checkPermission(player, "ops"))
                     .executes((c) -> here(c.getSource(), EntityArgumentType.getPlayer(c, "玩家"))));
 
         dispatcher.register(here);
@@ -44,11 +46,7 @@ public class hereCommand {
             player.addPotionEffect(new StatusEffectInstance(StatusEffects.GLOWING, Core.Config.Commands.Here.Glowing_Time * 20, 1, false, false));
             player.addChatMessage(Text.Serializer.fromJson(Core.Messages.Commands.Here.FeedbackMessage
                     .replaceAll("%glowing_time%", String.valueOf(Core.Config.Commands.Here.Glowing_Time))), true);
-            //player.addChatMessage(new TranslatableText(
-                    //Core.getMessage().command_here_glowing_message, Core.getConfig().command_here_glowing_time), true);
-
         }
-        //player.server.getPlayerManager().sendToAll(new LiteralText("").append("玩家 §d" + player.getEntityName().toString() + " §f在 " + Core.getMessage().dimensions_name.get(player.dimension.getId(player.getServerWorld().dimension.getType())) + "§f@§b[X:"+ (int)player.prevX + ", Y:" + (int)player.prevY + ", Z:" + (int)player.prevZ + "] §f向大家招手!"));
         return 1;
     }
 }
