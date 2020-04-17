@@ -9,7 +9,6 @@
     "MinecraftServerMixin",
     "CommandManagerMixin",
     "ServerPlayNetworkHandlerMixin",
-    "PlayerManagerMixin",
     "MinecraftDedicatedServerMixin",
   ],
   "injectors": {

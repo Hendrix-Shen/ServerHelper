@@ -38,16 +38,16 @@ public class backupCommand {
                 FileManager.copyDir(levelName, "backup/" + levelName);
 
             } catch (IOException e) {
-                Messager.Message(source, Core.Messages.Commands.Backup.FeedbackMessage.Failed_Unknown
+                Messager.sendMessage(source, Core.Messages.Commands.Backup.FeedbackMessage.Failed_Unknown
                     .replaceAll("%backup_name%", backupName));
                 e.printStackTrace();
                 return 0;
             }
             FileManager.renameFileAndDir("backup/" + levelName, "backup/" + backupName);
-            Messager.Message(source, Core.Messages.Commands.Backup.FeedbackMessage.Succeed
+            Messager.sendMessage(source, Core.Messages.Commands.Backup.FeedbackMessage.Succeed
                 .replaceAll("%backup_name%", backupName));
         } else {
-            Messager.Message(source, Core.Messages.Commands.Backup.FeedbackMessage.Failed_AlreadyExist
+            Messager.sendMessage(source, Core.Messages.Commands.Backup.FeedbackMessage.Failed_AlreadyExist
                 .replaceAll("%backup_name%", backupName));
         }
         return 1;

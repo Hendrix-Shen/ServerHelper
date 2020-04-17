@@ -35,29 +35,29 @@ public class UUIDInfo {
         }
         Gson gson1 = new GsonBuilder().setPrettyPrinting().create();
         try {
-            File UUIDPluginCacheFile = new File("config/SH_UUIDCache.json");
+            File UUIDPluginCacheFile = new File("config/ServerHelper/UUIDCache.json");
             if (UUIDPluginCacheFile.exists()) {
                 UUIDPluginCacheFile.delete();
             }
             UUIDPluginCacheFile.getParentFile().mkdir();
             try (Writer writer = new OutputStreamWriter(new FileOutputStream(UUIDPluginCacheFile), StandardCharsets.UTF_8))
             {
-                Messager.LOG.info("["+ Core.Mod_Name + "]写入 - UUID缓存文件 SH_UUIDCache.json");
+                Messager.LOG.info("["+ Core.Mod_Name + "]写入 - UUID缓存文件 UUIDCache.json");
                 writer.write(gson1.toJson(UUIDPluginInfo));
             }
         } catch (Exception e) {
-            Messager.LOG.info("["+ Core.Mod_Name + "]读写 - UUID缓存文件 SH_UUIDCache 失败");
+            Messager.LOG.info("["+ Core.Mod_Name + "]读写 - UUID缓存文件 UUIDCache 失败");
             e.printStackTrace();
             return 0;
         }
         return 1;
     }
     public static String NameToUUID(String playerName) {
-        if (!FileManager.fileExist("config/SH_UUIDCache.json")) {
+        if (!FileManager.fileExist("config/ServerHelper/UUIDCache.json")) {
             return "0";
         } else {
             try {
-                File statsFile = new File("config/SH_UUIDCache.json");
+                File statsFile = new File("config/ServerHelper/UUIDCache.json");
                 try {
                     Reader reader = new InputStreamReader(new FileInputStream(statsFile), StandardCharsets.UTF_8);
                     Gson gson = new Gson();

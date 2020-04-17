@@ -40,9 +40,9 @@ public class statsCommand {
                 .executes((c) -> refresh(c.getSource())))
             .then(literal("check")
                 .then(argument("玩家", StringArgumentType.word())
-                    .suggests((c, b) -> suggestMatching(getPlayers(c.getSource()), b))
+                    .suggests((c, b) -> suggestMatching(CommandManager.getPlayers(c.getSource()), b))
                     .then(argument("统计类别", StringArgumentType.word())
-                        .suggests(suggestClassification())
+                        .suggests(CommandManager.suggestClassification())
                         .then(argument("统计内容", StringArgumentType.word())
                             .executes((c) -> check(c.getSource(), getString(c, "玩家"), getString(c, "统计类别"), getString(c, "统计内容"), false, true))
                             .then(argument("是UUID", BoolArgumentType.bool())
@@ -51,7 +51,7 @@ public class statsCommand {
                                     .executes((c) -> check(c.getSource(), getString(c, "玩家"), getString(c, "统计类别"), getString(c, "统计内容"), BoolArgumentType.getBool(c,"是UUID"), BoolArgumentType.getBool(c, "仅自己可见")))))))))
             .then(literal("rank")
                 .then(argument("统计类别", StringArgumentType.word())
-                    .suggests(suggestClassification())
+                    .suggests(CommandManager.suggestClassification())
                     .then(argument("统计内容", StringArgumentType.word())
                         .executes((c) -> rank(c.getSource(), getString(c, "统计类别"), getString(c, "统计内容"), true))
                         .then(argument("仅自己可见", BoolArgumentType.bool())
@@ -59,7 +59,7 @@ public class statsCommand {
             .then(literal("scoreboard")
                 .then(literal("set")
                         .then(argument("统计类别", StringArgumentType.word())
-                            .suggests(suggestClassification())
+                            .suggests(CommandManager.suggestClassification())
                             .then(argument("统计内容", StringArgumentType.word())
                                 .executes((c) -> scoreboard_Set(c.getSource(), getString(c, "统计类别"), getString(c, "统计内容"))))))
                 .then(literal("show")
@@ -68,29 +68,7 @@ public class statsCommand {
                     .executes((c) -> scoreboard_hide(c.getSource()))));
         dispatcher.register(stats);
     }
-    public static CompletableFuture<Suggestions> getSuggestionsBuilder(SuggestionsBuilder builder, List<String> list) {
-        String remaining = builder.getRemaining().toLowerCase(Locale.ROOT);
 
-        if(list.isEmpty()) { // If the list is empty then return no suggestions
-            return Suggestions.empty(); // No suggestions
-        }
-
-        for (String str : list) { // Iterate through the supplied list
-            if (str.toLowerCase(Locale.ROOT).startsWith(remaining)) {
-                builder.suggest(str); // Add every single entry to suggestions list.
-            }
-        }
-        return builder.buildFuture(); // Create the CompletableFuture containing all the suggestions
-    }
-    public static SuggestionProvider<ServerCommandSource> suggestClassification(){
-        List<String> suggestList= Lists.newArrayList("custom", "crafted", "used", "broken", "mined", "killed", "picked_up", "dropped", "killed_by");
-        return (context, builder) -> getSuggestionsBuilder(builder, suggestList);
-    }
-    public static Collection<String> getPlayers(ServerCommandSource source){
-        List<String> suggestList = Lists.newArrayList();
-        suggestList.addAll(source.getPlayerNames());
-        return suggestList;
-    }
 
     public static int getStatsData(ServerCommandSource source, String uuid, String classification, String target) {
         if (!FileManager.fileExist(source.getMinecraftServer().getLevelName() + "/stats/" + uuid + ".json")) {
@@ -123,22 +101,22 @@ public class statsCommand {
             player_uuid = UUIDInfo.NameToUUID(playerName);
         }
         if (player_uuid == "0") {
-            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UUIDCacheLoadFailed);
+            Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UUIDCacheLoadFailed);
         } else if(player_uuid == "1") {
-            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.CantFindPlayerFromUUIDCache);
+            Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.CantFindPlayerFromUUIDCache);
         } else if(player_uuid == "2") {
-            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UnknownErrorByUUIDCache);
+            Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UnknownErrorByUUIDCache);
         } else {
             int statsData = getStatsData(source, player_uuid, classification, target);
             if (statsData == -1) {
-                Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.cantFindPlayerStatsFile);
+                Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.cantFindPlayerStatsFile);
             } else if (statsData == -2) {
-                Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.cantFindStatsFromFile);
+                Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.cantFindStatsFromFile);
             } else if(statsData == -3) {
-                Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UnknownErrorByStatsFinder);
+                Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.UnknownErrorByStatsFinder);
             } else {
                 if (istell) {
-                    Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.FeedbackMessage
+                    Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Check.FeedbackMessage.FeedbackMessage
                             .replaceAll("%target_name%", playerName)
                             .replaceAll("%stats_classification%", classification)
                             .replaceAll("%stats_target%", target)
@@ -158,12 +136,12 @@ public class statsCommand {
     }
     public static int rank(ServerCommandSource source, String classification, String target, boolean istell) {
         Map<String, String> rtMap = new HashMap<>();
-        if (!FileManager.fileExist("config/SH_UUIDCache.json")) {
-            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.UUIDCacheLoadFailed);
+        if (!FileManager.fileExist("config/ServerHelper/UUIDCache.json")) {
+            Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.UUIDCacheLoadFailed);
             return 1;
         } else {
             try {
-                File statsFile = new File("config/SH_UUIDCache.json");
+                File statsFile = new File("config/ServerHelper/SH_UUIDCache.json");
                 try {
                     Reader reader = new InputStreamReader(new FileInputStream(statsFile), StandardCharsets.UTF_8);
                     Gson gson = new Gson();
@@ -187,7 +165,7 @@ public class statsCommand {
             int StatsCount = 0;
             int TotalCount = 0;
             if(StatsList.isEmpty()){
-                Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.StatsNull);
+                Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.StatsNull);
             } else {
                 String StatsInfo = "";
                 for (Integer key : StatsList.keySet()) {
@@ -217,13 +195,14 @@ public class statsCommand {
                     if (StatsCount == Core.Config.Commands.Stats.Rank_Count) {
                         break;
                     }
-                } if(istell) {
-                    Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.FeedbackMessage
+                }
+                if(istell) {
+                    Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.FeedbackMessage
                     .replaceAll("%stats_classification%", classification)
                     .replaceAll("%stats_target%", target)
                     .replaceAll("%rank_count%", String.valueOf(StatsCount))
                     .replaceAll("%rank_total%", String.valueOf(TotalCount)));
-                    Messager.Message(source, ("{\"text\": \"" + StatsInfo + "\"}"));
+                    Messager.sendMessage(source, ("{\"text\": \"" + StatsInfo + "\"}"));
                 } else {
                     source.getMinecraftServer().getPlayerManager().broadcastChatMessage(Text.Serializer.fromJson(Core.Messages.Commands.Stats.SubCommands.Rank.FeedbackMessage.TargetMessage
                             .replaceAll("%player_name%", source.getDisplayName().getString())
@@ -239,20 +218,20 @@ public class statsCommand {
     }
     public static int refresh(ServerCommandSource source) {
         if(UUIDInfo.UUIDCacheRefresh() == 1){
-            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Refresh.FeedbackMessage.Refresh_Succeed);
+            Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Refresh.FeedbackMessage.Refresh_Succeed);
         } else {
-            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Refresh.FeedbackMessage.Refresh_Failed);
+            Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Refresh.FeedbackMessage.Refresh_Failed);
         }
         return 1;
     }
     public static int scoreboard_Set(ServerCommandSource source, String classification, String target){
         Map<String, String> rtMap = new HashMap<>();
-        if (!FileManager.fileExist("config/SH_UUIDCache.json")) {
-            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Set.FeedbackMessage.UUIDCacheLoadFailed);
+        if (!FileManager.fileExist("config/ServerHelper/UUIDCache.json")) {
+            Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Set.FeedbackMessage.UUIDCacheLoadFailed);
             return 1;
         } else {
             try {
-                File statsFile = new File("config/SH_UUIDCache.json");
+                File statsFile = new File("config/ServerHelper/UUIDCache.json");
                 try {
                     Reader reader = new InputStreamReader(new FileInputStream(statsFile), StandardCharsets.UTF_8);
                     Gson gson = new Gson();
@@ -271,19 +250,19 @@ public class statsCommand {
                     source.getMinecraftServer().getCommandManager().execute(source.getMinecraftServer().getCommandSource(), "scoreboard players set " + key + " StatsHelper " + getStatsData(source, rtMap.get(key), classification, target));
                 }
             }
-            Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Set.FeedbackMessage.FeedbackMessage);
+            Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Set.FeedbackMessage.FeedbackMessage);
             scoreboard_show(source);
         }
         return 1;
     }
     public static int scoreboard_show(ServerCommandSource source) {
         source.getMinecraftServer().getCommandManager().execute(source.getMinecraftServer().getCommandSource(), "/scoreboard objectives setdisplay sidebar StatsHelper");
-        Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Show.FeedbackMessage.Show_Succeed);
+        Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Show.FeedbackMessage.Show_Succeed);
         return 1;
     }
     public static int scoreboard_hide(ServerCommandSource source) {
         source.getMinecraftServer().getCommandManager().execute(source.getMinecraftServer().getCommandSource(), "/scoreboard objectives setdisplay sidebar");
-        Messager.Message(source, Core.Messages.Commands.Stats.SubCommands.Hide.FeedbackMessage.Hide_Succeed);
+        Messager.sendMessage(source, Core.Messages.Commands.Stats.SubCommands.Hide.FeedbackMessage.Hide_Succeed);
         return 1;
     }
 }

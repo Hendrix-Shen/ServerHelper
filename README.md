@@ -16,19 +16,22 @@
 
 `!!here 共享自己的坐标`
 
-`!!op 获取op权限`(若担心滥用问题可以在配置文件中禁用)
+`!!joinMOTD`
 
+`!!op 获取op权限`(若担心滥用问题可以在配置文件中禁用)
 
 `!!restart 重启服务器`(实际上执行的是关服指令, 自动重启依赖于启动脚本)
 
 支持大部分语言文本(其中的大部分都支持Json显示)
 
-### 以下是以还原 [MCD](https://github.com/Fallen-Breath/MCDReforged) [部分插件](https://github.com/MCDReforged-Plugins/PluginCatalogue) 的列表
+#### 以下是以还原 [MCD](https://github.com/Fallen-Breath/MCDReforged) [部分插件](https://github.com/MCDReforged-Plugins/PluginCatalogue) 的列表
 | 名称                                                 | 维护者                                            | 功能                                     |
 | ---------------------------------------------------- | ------------------------------------------------- | ---------------------------------------- |
 | [Here](https://github.com/TISUnion/Here)             | [Fallen_Breath](https://github.com/Fallen-Breath) | 显示坐标并高亮玩家                       |
+| [joinMOTD](https://github.com/TISUnion/joinMOTD)             | [Fallen_Breath](https://github.com/Fallen-Breath) | 玩家加入服务器时显示欢迎信息及服务器列表                       |
 | [SimpleOP](https://github.com/MCDReforged-Plugins/SimpleOP) | [Fallen_Breath](https://github.com/Fallen-Breath) | 使用 `!!op` 来获得 op，`!!restart` 来重启服务器 |
 | [StatsHelper](https://github.com/TISUnion/StatsHelper)       | [Fallen_Breath](https://github.com/Fallen-Breath) | 统计信息查询以及计分板创建   |
+| [TitleAPI](https://github.com/hanbings/TitleAPI)       | [Hanbings](https://github.com/hanbings) | 封装Title指令   |
 
 ## 指令
 
@@ -37,6 +40,8 @@
 `/core help [页码]` - 显示指令帮助
 
 `/core here [玩家]` - 共享玩家坐标并高亮玩家(若启用高亮) 注意仅 OP 玩家可以高亮其他玩家
+
+`/core joinMotd [模式]` - 显示欢迎标语
 
 `/core reload <all/message/config>` - 重新载入配置文件 仅 OP 玩家
 
