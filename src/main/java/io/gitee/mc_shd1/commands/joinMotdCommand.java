@@ -40,10 +40,9 @@ public class joinMotdCommand {
         Messager.sendMessage(source, ConfigManager.JoinMotd.JoinMessage.Message.Message
             .replaceAll("%Server_DisplayName%", ConfigManager.JoinMotd.General.ServerDisplayName)
             .replaceAll("%Server_Name%", ConfigManager.JoinMotd.General.ServerName)
-            .replaceAll("%StartTime_Days%", String.valueOf(Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Days")))
-            .replaceAll("%StartTime_Hours%", String.valueOf(Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Hours")))
-            .replaceAll("%StartTime_Minutes%", String.valueOf(Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Minutes")))
-        );
+            .replaceAll("%StartTime_Days%", String.valueOf((int)Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Days") + 1))
+            .replaceAll("%StartTime_Hours%", String.valueOf((int)Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Hours") + 1))
+            .replaceAll("%StartTime_Minutes%", String.valueOf((int)Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Minutes") + 1)));
         if(ConfigManager.JoinMotd.JoinMessage.Message.EnableMultiServer) {
             Messager.sendMessage(source, ConfigManager.JoinMotd.JoinMessage.Message.ServerListTitle);
             String ServerList = "";
@@ -57,16 +56,18 @@ public class joinMotdCommand {
         return 1;
     }
     public static int Title(ServerCommandSource source) throws CommandSyntaxException, ParseException {
-        TitleAPI.title(source, ConfigManager.JoinMotd.JoinMessage.Title.Title.replaceAll("%Server_DisplayName%", ConfigManager.JoinMotd.General.ServerDisplayName)
+        TitleAPI.title(source, ConfigManager.JoinMotd.JoinMessage.Title.Title
+                .replaceAll("%Server_DisplayName%", ConfigManager.JoinMotd.General.ServerDisplayName)
                 .replaceAll("%Server_Name%", ConfigManager.JoinMotd.General.ServerName)
-                .replaceAll("%StartTime_Days%", String.valueOf(Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Days")))
-                .replaceAll("%StartTime_Hours%", String.valueOf(Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Hours")))
-                .replaceAll("%StartTime_Minutes%", String.valueOf(Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Minutes"))));
-        TitleAPI.subtitle(source, ConfigManager.JoinMotd.JoinMessage.Title.SubTitle.replaceAll("%Server_DisplayName%", ConfigManager.JoinMotd.General.ServerDisplayName)
+                .replaceAll("%StartTime_Days%", String.valueOf((int)Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Days") + 1))
+                .replaceAll("%StartTime_Hours%", String.valueOf((int)Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Hours") + 1))
+                .replaceAll("%StartTime_Minutes%", String.valueOf((int)Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Minutes") + 1)));
+        TitleAPI.subtitle(source, ConfigManager.JoinMotd.JoinMessage.Title.SubTitle
+                .replaceAll("%Server_DisplayName%", ConfigManager.JoinMotd.General.ServerDisplayName)
                 .replaceAll("%Server_Name%", ConfigManager.JoinMotd.General.ServerName)
-                .replaceAll("%StartTime_Days%", String.valueOf(Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Days")))
-                .replaceAll("%StartTime_Hours%", String.valueOf(Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Hours")))
-                .replaceAll("%StartTime_Minutes%", String.valueOf(Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Minutes"))));
+                .replaceAll("%StartTime_Days%", String.valueOf((int)Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Days") + 1))
+                .replaceAll("%StartTime_Hours%", String.valueOf((int)Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Hours") + 1))
+                .replaceAll("%StartTime_Minutes%", String.valueOf((int)Time.Difftime(ConfigManager.JoinMotd.General.FirstRunTime, Time.GetTime()).get("Total_Minutes") + 1)));
         return 1;
     }
 }

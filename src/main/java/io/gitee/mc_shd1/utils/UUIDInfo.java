@@ -39,7 +39,7 @@ public class UUIDInfo {
             if (UUIDPluginCacheFile.exists()) {
                 UUIDPluginCacheFile.delete();
             }
-            UUIDPluginCacheFile.getParentFile().mkdir();
+            UUIDPluginCacheFile.getParentFile().mkdirs();
             try (Writer writer = new OutputStreamWriter(new FileOutputStream(UUIDPluginCacheFile), StandardCharsets.UTF_8))
             {
                 Messager.LOG.info("["+ Core.Mod_Name + "]写入 - UUID缓存文件 UUIDCache.json");

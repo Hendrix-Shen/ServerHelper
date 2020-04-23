@@ -3,6 +3,7 @@ package io.gitee.mc_shd1.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.gitee.mc_shd1.Core;
+import io.gitee.mc_shd1.config.ConfigManager;
 import io.gitee.mc_shd1.utils.CommandManager;
 import net.minecraft.command.arguments.EntityArgumentType;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -30,22 +31,22 @@ public class hereCommand {
 
     public static int here(ServerCommandSource source, ServerPlayerEntity player) {
         Identifier dimensionId = DimensionType.getId(player.getServerWorld().getDimension().getType());
-        String dimensionName = Core.Messages.General.dimensions.get(dimensionId.getPath());
+        String dimensionName = ConfigManager.Messages.General.dimensions.get(dimensionId.getPath());
         if (dimensionName == null) {
             dimensionName = dimensionId.getPath();
         }
         BlockPos blockPos = new BlockPos(player);
 
-        player.getServer().getPlayerManager().broadcastChatMessage(Text.Serializer.fromJson(Core.Messages.Commands.Here.TargetMessage
+        player.getServer().getPlayerManager().broadcastChatMessage(Text.Serializer.fromJson(ConfigManager.Messages.Commands.Here.TargetMessage
                 .replaceAll("%player_name%", player.getDisplayName().getString())
                 .replaceAll("%player_dimension%", dimensionName)
                 .replaceAll("%player_x%", String.valueOf(blockPos.getX()))
                 .replaceAll("%player_y%", String.valueOf(blockPos.getY()))
                 .replaceAll("%player_z%", String.valueOf(blockPos.getZ()))), true);
-        if (Core.Config.Commands.Here.Glowing_Time > 0) {
-            player.addPotionEffect(new StatusEffectInstance(StatusEffects.GLOWING, Core.Config.Commands.Here.Glowing_Time * 20, 1, false, false));
-            player.addChatMessage(Text.Serializer.fromJson(Core.Messages.Commands.Here.FeedbackMessage
-                    .replaceAll("%glowing_time%", String.valueOf(Core.Config.Commands.Here.Glowing_Time))), true);
+        if (ConfigManager.Config.Commands.Here.Glowing_Time > 0) {
+            player.addPotionEffect(new StatusEffectInstance(StatusEffects.GLOWING, ConfigManager.Config.Commands.Here.Glowing_Time * 20, 0, false, false));
+            player.addChatMessage(Text.Serializer.fromJson(ConfigManager.Messages.Commands.Here.FeedbackMessage
+                    .replaceAll("%glowing_time%", String.valueOf(ConfigManager.Config.Commands.Here.Glowing_Time))), true);
         }
         return 1;
     }

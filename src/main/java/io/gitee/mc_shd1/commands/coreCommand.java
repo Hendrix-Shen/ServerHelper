@@ -84,58 +84,63 @@ public class coreCommand {
                         .then(literal("show")
                             .executes((c) -> statsCommand.scoreboard_show(c.getSource())))
                         .then(literal("hide")
-                            .executes((c) -> statsCommand.scoreboard_hide(c.getSource())))));
+                            .executes((c) -> statsCommand.scoreboard_hide(c.getSource())))))
+                .then(literal("wiki")
+                    .then(literal("official")
+                        .then(argument("搜索内容", greedyString()).executes((c) -> wikiCommand.wiki(c.getSource(), getString(c, "搜索内容"), "Official"))))
+                    .then(literal("bilibili")
+                        .then(argument("搜索内容", greedyString()).executes((c) -> wikiCommand.wiki(c.getSource(), getString(c, "搜索内容"), "Bilibili")))));
         dispatcher.register(core);
     }
 
     public static int CoreReloadAll(ServerCommandSource source) {
         Messager.LOG.info("[ServerHelper]正在重新加载配置文件(完全模式)");
         Messager.LOG.info("[ServerHelper]==========检查配置文件==========");
-        if (Core.CheckMainConfig() && Core.CheckMessage() && ConfigManager.SetupJoinMotdConfig()) {
+        if (ConfigManager.SetupMainConfig() && ConfigManager.SetupMessage() && ConfigManager.SetupJoinMotdConfig()) {
             Messager.sendMessage(source,
-                    Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.All_Succeed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.FullMode));
+                    ConfigManager.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.All_Succeed
+                    .replaceAll("%reload_mode%", ConfigManager.Messages.Commands.Core.SubCommands.Reload.ReloadMod.FullMode));
             Messager.LOG.info("[ServerHelper]重载完成!");
         } else {
             Messager.sendMessage(source,
-                    Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.All_Failed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.FullMode));
+                    ConfigManager.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.All_Failed
+                    .replaceAll("%reload_mode%", ConfigManager.Messages.Commands.Core.SubCommands.Reload.ReloadMod.FullMode));
             Messager.LOG.error("[ServerHelper]重载失败!");
             Messager.LOG.error("[ServerHelper]请检查配置文件!");
         }
         return 1;
     }
     public static int CoreReloadConfig(ServerCommandSource source) {
-        Messager.LOG.info("[HSCore]正在重新加载配置文件(简单模式)");
-        Messager.LOG.info("[HSCore]==========检查配置文件==========");
-        if (Core.CheckMainConfig()) {
+        Messager.LOG.info("[ServerHelper]正在重新加载配置文件(简单模式)");
+        Messager.LOG.info("[ServerHelper]==========检查配置文件==========");
+        if (ConfigManager.SetupMainConfig()) {
             Messager.sendMessage(source,
-                    Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Config_Succeed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Config));
-            Messager.LOG.info("[HSCore]重载完成!");
+                    ConfigManager.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Config_Succeed
+                    .replaceAll("%reload_mode%", ConfigManager.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Config));
+            Messager.LOG.info("[ServerHelper]重载完成!");
         } else {
             Messager.sendMessage(source,
-                    Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Config_Failed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Config));
-            Messager.LOG.error("[HSCore]重载失败!");
-            Messager.LOG.error("[HSCore]请检查配置文件!");
+                    ConfigManager.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Config_Failed
+                    .replaceAll("%reload_mode%", ConfigManager.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Config));
+            Messager.LOG.error("[ServerHelper]重载失败!");
+            Messager.LOG.error("[ServerHelper]请检查配置文件!");
         }
         return 1;
     }
     public static int CoreReloadMessage(ServerCommandSource source) {
-        Messager.LOG.info("[HSCore]正在重新加载配置文件(简单模式)");
-        Messager.LOG.info("[HSCore]==========检查配置文件==========");
-        if (Core.CheckMessage()) {
+        Messager.LOG.info("[ServerHelper]正在重新加载配置文件(简单模式)");
+        Messager.LOG.info("[ServerHelper]==========检查配置文件==========");
+        if (ConfigManager.SetupMessage()) {
             Messager.sendMessage(source,
-                    Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Message_Succeed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Message));
-            Messager.LOG.info("[HSCore]重载完成!");
+                    ConfigManager.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Message_Succeed
+                    .replaceAll("%reload_mode%", ConfigManager.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Message));
+            Messager.LOG.info("[ServerHelper]重载完成!");
         } else {
             Messager.sendMessage(source,
-                    Core.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Message_Failed
-                    .replaceAll("%reload_mode%", Core.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Message));
-            Messager.LOG.error("[HSCore]重载失败!");
-            Messager.LOG.error("[HSCore]请检查配置文件!");
+                    ConfigManager.Messages.Commands.Core.SubCommands.Reload.FeedbackMessage.Message_Failed
+                    .replaceAll("%reload_mode%", ConfigManager.Messages.Commands.Core.SubCommands.Reload.ReloadMod.Message));
+            Messager.LOG.error("[ServerHelper]重载失败!");
+            Messager.LOG.error("[ServerHelper]请检查配置文件!");
         }
         return 1;
     }
@@ -164,6 +169,7 @@ public class coreCommand {
                     "{\"text\": \"§a/core stats scoreboard hide §7- §b隐藏统计信息计分板\n\", \"hoverEvent\": {\"action\": \"show_text\", \"value\": \"§e别称\n§f- §7/stats scoreboard hide\n§a点击复制到聊天窗\"}, \"clickEvent\": {\"action\": \"suggest_command\", \"value\": \"/core stats scoreboard hide\"}}," + //2
                     "{\"text\": \"§a/core stats scoreboard set <统计类别> <统计内容> §7- §b设置统计信息计分板\n\", \"hoverEvent\": {\"action\": \"show_text\", \"value\": \"§e别称\n§f- §7/stats scoreboard set\n§a点击复制到聊天窗\"}, \"clickEvent\": {\"action\": \"suggest_command\", \"value\": \"/core stats scoreboard set \"}}," + //3
                     "{\"text\": \"§a/core stats scoreboard show §7- §b显示统计信息计分板\n\", \"hoverEvent\": {\"action\": \"show_text\", \"value\": \"§e别称\n§f- §7/stats scoreboard show\n§a点击复制到聊天窗\"}, \"clickEvent\": {\"action\": \"suggest_command\", \"value\": \"/core stats scoreboard show\"}}," + //4
+                    "{\"text\": \"§a/core wiki <源> <搜索信息> §7- §b从百科上搜索信息\n\", \"hoverEvent\": {\"action\": \"show_text\", \"value\": \"§e别称\n§f- §7/wiki\n§a点击复制到聊天窗\"}, \"clickEvent\": {\"action\": \"suggest_command\", \"value\": \"/core wiki \"}}," + //5
                     "{\"text\": \"§e================ 第 §2" + String.format("%2d", Page) +"§e 页 || 共 §2" + String.format("%2d", MaxPage) + "§e 页 ================\n\"}," +
                     "{\"text\": \"§e============== \"}," +
                     "{\"text\": \"§2<<< 上一页\", \"clickEvent\": {\"action\": \"run_command\", \"value\": \"/core help " + (Page - 1) + "\"}}," +

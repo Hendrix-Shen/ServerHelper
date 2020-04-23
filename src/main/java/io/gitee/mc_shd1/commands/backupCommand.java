@@ -3,6 +3,7 @@ package io.gitee.mc_shd1.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.gitee.mc_shd1.Core;
+import io.gitee.mc_shd1.config.ConfigManager;
 import io.gitee.mc_shd1.utils.CommandManager;
 import io.gitee.mc_shd1.utils.FileManager;
 import io.gitee.mc_shd1.utils.Messager;
@@ -38,16 +39,16 @@ public class backupCommand {
                 FileManager.copyDir(levelName, "backup/" + levelName);
 
             } catch (IOException e) {
-                Messager.sendMessage(source, Core.Messages.Commands.Backup.FeedbackMessage.Failed_Unknown
+                Messager.sendMessage(source, ConfigManager.Messages.Commands.Backup.FeedbackMessage.Failed_Unknown
                     .replaceAll("%backup_name%", backupName));
                 e.printStackTrace();
                 return 0;
             }
             FileManager.renameFileAndDir("backup/" + levelName, "backup/" + backupName);
-            Messager.sendMessage(source, Core.Messages.Commands.Backup.FeedbackMessage.Succeed
+            Messager.sendMessage(source, ConfigManager.Messages.Commands.Backup.FeedbackMessage.Succeed
                 .replaceAll("%backup_name%", backupName));
         } else {
-            Messager.sendMessage(source, Core.Messages.Commands.Backup.FeedbackMessage.Failed_AlreadyExist
+            Messager.sendMessage(source, ConfigManager.Messages.Commands.Backup.FeedbackMessage.Failed_AlreadyExist
                 .replaceAll("%backup_name%", backupName));
         }
         return 1;

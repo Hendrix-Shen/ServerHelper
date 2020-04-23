@@ -18,6 +18,7 @@ public final class Messages {
         public __Backup Backup = new __Backup();
         public __Here Here = new __Here();
         public __Stats Stats = new __Stats();
+        public __Wiki Wiki = new __Wiki();
         public class __Backup {
             public __FeedbackMessage FeedbackMessage = new __FeedbackMessage();
             public class __FeedbackMessage {
@@ -120,6 +121,10 @@ public final class Messages {
                     }
                 }
             }
+        }
+        public class __Wiki {
+            public String BilibiliWiki = "{\"text\":\"§a点击查看搜索 §e%search_content% §a的结果((§7源:§b§bBilibili§a)\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://searchwiki.biligame.com/mc/index.php?search=%search_url_content%\"}}";
+            public String OfficalWiki = "{\"text\":\"§a点击查看搜索 §e%search_content% §a的结果(§7源:§b官方§a)\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://minecraft-zh.gamepedia.com/index.php?search=%search_url_content%\"}}";
         }
     }
 }
